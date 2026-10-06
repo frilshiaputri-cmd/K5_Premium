@@ -370,7 +370,7 @@ playIntro()
 
 -- ============================================
 -- UI
--- Compact K5-HUB UI inspired by the supplied reference.
+-- Compact K5-HUB UI based on the supplied reference.
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "K5-HUB"
 ScreenGui.Parent = (gethui and gethui()) or game:GetService("CoreGui")
@@ -395,16 +395,16 @@ UICorner.CornerRadius = UDim.new(0, 12)
 UICorner.Parent = MainFrame
 
 local UIStroke = Instance.new("UIStroke")
-UIStroke.Color = Color3.fromRGB(170, 70, 255)
+UIStroke.Color = Color3.fromRGB(175, 75, 255)
 UIStroke.Thickness = 1.5
 UIStroke.Transparency = 0.15
 UIStroke.Parent = MainFrame
 
 local strokeGradient = Instance.new("UIGradient")
 strokeGradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(95, 40, 180)),
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(210, 70, 255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(95, 40, 180)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(90, 35, 170)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(220, 80, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(90, 35, 170)),
 })
 strokeGradient.Parent = UIStroke
 
@@ -432,7 +432,7 @@ Title.Size = UDim2.new(1, -105, 1, 0)
 Title.Position = UDim2.new(0, 43, 0, 0)
 Title.BackgroundTransparency = 1
 Title.Text = "K5-HUB"
-Title.TextColor3 = Color3.fromRGB(235, 215, 255)
+Title.TextColor3 = Color3.fromRGB(240, 220, 255)
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 14
 Title.TextXAlignment = Enum.TextXAlignment.Left
@@ -552,36 +552,25 @@ rs.Thickness = 2
 rs.Transparency = 0.15
 rs.Parent = ReopenButton
 
--- Reliable dragging for desktop/mobile.
 local function makeDraggable(handle, target)
     local dragging = false
     local dragStart
     local startPos
-
     handle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1
-            or input.UserInputType == Enum.UserInputType.Touch then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             dragStart = input.Position
             startPos = target.Position
-
             input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
+                if input.UserInputState == Enum.UserInputState.End then dragging = false end
             end)
         end
     end)
-
     UserInputService.InputChanged:Connect(function(input)
         if not dragging then return end
-        if input.UserInputType ~= Enum.UserInputType.MouseMovement
-            and input.UserInputType ~= Enum.UserInputType.Touch then return end
+        if input.UserInputType ~= Enum.UserInputType.MouseMovement and input.UserInputType ~= Enum.UserInputType.Touch then return end
         local delta = input.Position - dragStart
-        target.Position = UDim2.new(
-            startPos.X.Scale, startPos.X.Offset + delta.X,
-            startPos.Y.Scale, startPos.Y.Offset + delta.Y
-        )
+        target.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
     end)
 end
 
@@ -1133,3 +1122,229 @@ end)
 -- TAB 4: CONFIG
 -- ============================================
 -- ============================================================
+-- IRONSOUL V61.11 ADVANCED ENGINE BRIDGE
+-- Uses the proven modular engine from ironsoulkaitun-main.
+-- The original hub UI remains intact; this bridge starts the
+-- advanced engine and maps the compatible settings.
+-- ============================================================
+local ADVANCED_ENGINE_BASE = "https://raw.githubusercontent.com/frilshiaputri-cmd/K5_Premium/main/"
+
+local function launchAdvancedEngine()
+    local env = getgenv()
+    env["K5-HUBConfig"] = env["K5-HUBConfig"] or {}
+    env["K5-HUBConfig"].FPS_CAP = Config.get("FPSBoost", false) and 8 or 60
+    env["K5-HUBConfig"].FARM = Config.get("SelectedMap", "Starless Island")
+    env["K5-HUBConfig"].TICKETS = "SMART"
+    env["K5-HUBConfig"].HEADLESS = false
+    env["K5-HUBConfig"].CAVE_AUTO = Config.get("DungeonMode", "Dungeon") == "Cave"
+    env["K5-HUBConfig"].HELL_AUTO = Config.get("HellMode", false) or Config.get("InfernoMode", false)
+    env["K5-HUBConfig"].SHOP_AUTO = false
+    env["K5-HUBConfig"].DEBUG_LOGS = false
+
+    local url = tostring(env.K5-HUBEngineBase or ADVANCED_ENGINE_BASE) .. "bootstrap_v61_11.lua?hub=1&t=" .. tostring(os.time())
+    local ok, err = pcall(function()
+        loadstring(game:HttpGet(url))()
+    end)
+    if not ok then
+        warn("[K5-HUB] Advanced engine failed: " .. tostring(err))
+        pcall(function() StarterGui:SetCore("SendNotification", {
+            Title = "K5-HUB V61.11", Text = "Engine gagal dijalankan: " .. tostring(err), Duration = 5
+        }) end)
+    end
+end
+
+createTab("Advanced", "⚙️", function()
+    createSection("V61.11 Advanced Engine")
+    createInfoBox({
+        "Memakai engine modular dari ironsoulkaitun-main.",
+        "Combat / Skill / Cave / Dungeon / Transition / Lobby",
+        "tetap berasal dari modul V61.11.",
+    })
+    createButton("🚀 START V61.11 ENGINE", launchAdvancedEngine)
+    createButton("📌 LOAD ORIGINAL HUB ENGINE", function()
+        pcall(function()
+            loadstring(game:HttpGet(ADVANCED_ENGINE_BASE .. "bootstrap.lua?hub=1&t=" .. tostring(os.time())))()
+        end)
+    end)
+end)
+
+createTab("Config", "💾", function()
+    createSection("Auto Execute")
+    createToggle("Auto Execute on Teleport", Config.get("AutoExecute", true), function(s)
+        Config.set("AutoExecute", s)
+        if s then enableAutoExec() end
+    end)
+    createInfoBox({
+        "🔄 Script auto-execute di place baru",
+        "📌 Support: Delta, Codex, Fluxus",
+        "🎮 Cocok buat dungeon (pindah place)",
+    }, Color3.fromRGB(0, 200, 255))
+    
+    createSection("Config File")
+    createInfoBox({
+        "📁 File: " .. CONFIG_FILE,
+        "👤 Akun: " .. Player.Name .. " (ID: " .. Player.UserId .. ")",
+        "💾 File tersimpan di folder executor",
+    }, Color3.fromRGB(150, 200, 255))
+    
+    createSection("Actions")
+    createButton("💾 Save Config Now", function()
+        Config.save()
+        StatusBar.Text = "💾 Config saved!"
+        StatusBar.TextColor3 = Color3.fromRGB(0, 255, 100)
+        if Config.get("SoundNotif", true) then playSound(SOUND_SUCCESS, 0.5) end
+    end, Color3.fromRGB(20, 100, 70))
+    
+    createButton("🔄 Reset All Config", function()
+        Config.reset()
+        StatusBar.Text = "🔄 Config direset! Restart script."
+        StatusBar.TextColor3 = Color3.fromRGB(255, 200, 0)
+    end, Color3.fromRGB(100, 50, 15))
+    
+    createButton("📂 Show Config Content", function()
+        if readfile and isfile and isfile(CONFIG_FILE) then
+            warn("=== CONFIG CONTENT ===")
+            warn(readfile(CONFIG_FILE))
+            warn("======================")
+            StatusBar.Text = "📂 Cek console output"
+        else
+            StatusBar.Text = "❌ Config file gak ada"
+        end
+    end, Color3.fromRGB(40, 60, 100))
+    
+    createSection("Session Info")
+    local info = Instance.new("TextLabel")
+    info.Size = UDim2.new(1, 0, 0, 90)
+    info.BackgroundColor3 = Color3.fromRGB(18, 18, 32)
+    info.Text = string.format(
+        "👤 %s (ID: %d)\n⏱️ Session: %s\n🎮 Place ID: %d\n📊 Tabs: Main | Map | Misc | Config",
+        Player.Name, Player.UserId, getElapsed(), game.PlaceId)
+    info.TextColor3 = Color3.fromRGB(150, 180, 220)
+    info.Font = Enum.Font.GothamMedium
+    info.TextSize = 11
+    info.TextXAlignment = Enum.TextXAlignment.Left
+    info.TextYAlignment = Enum.TextYAlignment.Top
+    info.Parent = ContentFrame
+    
+    local ic = Instance.new("UICorner")
+    ic.CornerRadius = UDim.new(0, 8)
+    ic.Parent = info
+end)
+
+-- ============================================
+-- TAB HANDLER
+-- ============================================
+tabButtons[1].BackgroundColor3 = Color3.fromRGB(0, 100, 180)
+tabButtons[1].TextColor3 = Color3.fromRGB(255, 255, 255)
+clearContent()
+tabButtons[1].MouseButton1Click:Fire()
+
+-- ============================================
+-- MINIMIZE / CLOSE
+local function showLogo()
+    MainFrame.Visible = false
+    ReopenButton.Visible = true
+end
+
+local function showHub()
+    MainFrame.Visible = true
+    ReopenButton.Visible = false
+end
+
+MinButton.MouseButton1Click:Connect(function()
+    showLogo()
+    Config.set("UIMinimized", true)
+    if Config.get("SoundNotif", true) then playSound(SOUND_CLICK, 0.2) end
+end)
+
+CloseButton.MouseButton1Click:Connect(function()
+    showLogo()
+    Config.set("UIMinimized", true)
+    if Config.get("SoundNotif", true) then playSound(SOUND_CLICK, 0.2) end
+end)
+
+ReopenButton.MouseButton1Click:Connect(function()
+    showHub()
+    Config.set("UIMinimized", false)
+    if Config.get("SoundNotif", true) then playSound(SOUND_SUCCESS, 0.3) end
+end)
+
+if Config.get("UIMinimized", false) then showLogo() end
+
+-- ============================================
+-- ============================================
+-- AUTO-APPLY SPEED ON RESPAWN
+-- ============================================
+Player.CharacterAdded:Connect(function(char)
+    task.wait(1)
+    if Config.get("SpeedEnabled", false) then
+        local hum = char:FindFirstChildOfClass("Humanoid")
+        if hum then hum.WalkSpeed = Config.get("WalkSpeed", 16) end
+    end
+end)
+
+-- ============================================
+-- ANTI-AFK
+-- ============================================
+task.spawn(function()
+    while true do
+        task.wait(60)
+        if Config.get("AntiAFK", true) then
+            pcall(function()
+                game:GetService("VirtualUser"):CaptureController()
+                game:GetService("VirtualUser"):ClickButton1(Vector2.new(0, 0))
+            end)
+        end
+    end
+end)
+
+-- ============================================
+-- AUTO OPEN DOORS
+-- ============================================
+task.spawn(function()
+    while true do
+        task.wait(1)
+        if Config.get("AutoOpenDoors", true) then
+            pcall(function()
+                local char = Player.Character
+                if not char then return end
+                local root = char:FindFirstChild("HumanoidRootPart")
+                if not root then return end
+                for _, obj in ipairs(workspace:GetDescendants()) do
+                    if obj:IsA("ProximityPrompt") and obj.Enabled then
+                        local parent = obj.Parent
+                        if parent and parent:IsA("BasePart") then
+                            local dist = (parent.Position - root.Position).Magnitude
+                            if dist < 20 and fireproximityprompt then
+                                fireproximityprompt(obj)
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+-- ============================================
+-- PARTY DETECTOR
+-- ============================================
+task.spawn(function()
+    while true do
+        task.wait(2)
+        pcall(function()
+            Tracker.PartySize = math.min(#game:GetService("Players"):GetPlayers(), 4)
+        end)
+    end
+end)
+
+-- ============================================
+-- INIT
+-- ============================================
+print("[Yuszx] ═══════════════════════════════════")
+print("[Yuszx] Iron Soul v13 CLEAN loaded!")
+print("[Yuszx] User: " .. Player.Name .. " (ID: " .. Player.UserId .. ")")
+print("[Yuszx] Tabs: Main | Map | Misc | Config")
+print("[Yuszx] Config: " .. CONFIG_FILE)
+print("[Yuszx] Auto Execute: " .. (Config.get("AutoExecute", true) and "ON" or "OFF"))
+print("[Yuszx] ═══════════════════════════════════")
