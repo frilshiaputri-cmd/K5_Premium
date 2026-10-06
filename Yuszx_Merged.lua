@@ -370,21 +370,24 @@ playIntro()
 
 -- ============================================
 -- UI
--- ============================================
+-- Compact K5-HUB UI inspired by the supplied reference.
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "YuszxK5-HUB"
+ScreenGui.Name = "K5-HUB"
 ScreenGui.Parent = (gethui and gethui()) or game:GetService("CoreGui")
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.ResetOnSpawn = false
 ScreenGui.DisplayOrder = 998
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
 
 local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 600, 0, 440)
-MainFrame.Position = UDim2.new(-1, 0, 0.5, -220)
-MainFrame.BackgroundColor3 = Color3.fromRGB(8, 8, 18)
+MainFrame.Size = UDim2.new(0, 430, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -215, 0.5, -150)
+MainFrame.BackgroundColor3 = Color3.fromRGB(10, 8, 18)
 MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
-MainFrame.Draggable = true
 MainFrame.Parent = ScreenGui
 
 local UICorner = Instance.new("UICorner")
@@ -392,28 +395,24 @@ UICorner.CornerRadius = UDim.new(0, 12)
 UICorner.Parent = MainFrame
 
 local UIStroke = Instance.new("UIStroke")
-UIStroke.Color = Color3.fromRGB(0, 200, 255)
-UIStroke.Thickness = 2
-UIStroke.Transparency = 0.2
+UIStroke.Color = Color3.fromRGB(170, 70, 255)
+UIStroke.Thickness = 1.5
+UIStroke.Transparency = 0.15
 UIStroke.Parent = MainFrame
 
 local strokeGradient = Instance.new("UIGradient")
 strokeGradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 200, 255)),
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(150, 50, 255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 200, 255)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(95, 40, 180)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(210, 70, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(95, 40, 180)),
 })
 strokeGradient.Parent = UIStroke
 
-game:GetService("TweenService"):Create(MainFrame,
-    TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
-    { Position = UDim2.new(0.5, -300, 0.5, -220) }
-):Play()
-
 local TopBar = Instance.new("Frame")
-TopBar.Size = UDim2.new(1, 0, 0, 44)
-TopBar.BackgroundColor3 = Color3.fromRGB(12, 12, 25)
+TopBar.Size = UDim2.new(1, 0, 0, 38)
+TopBar.BackgroundColor3 = Color3.fromRGB(18, 12, 28)
 TopBar.BorderSizePixel = 0
+TopBar.Active = true
 TopBar.Parent = MainFrame
 
 local tbc = Instance.new("UICorner")
@@ -421,139 +420,175 @@ tbc.CornerRadius = UDim.new(0, 12)
 tbc.Parent = TopBar
 
 local Logo = Instance.new("ImageLabel")
-Logo.Size = UDim2.new(0, 36, 0, 36)
-Logo.Position = UDim2.new(0, 8, 0, 4)
+Logo.Size = UDim2.new(0, 30, 0, 30)
+Logo.Position = UDim2.new(0, 7, 0, 4)
 Logo.BackgroundTransparency = 1
 Logo.Image = LOGO_ASSET
 Logo.ScaleType = Enum.ScaleType.Fit
 Logo.Parent = TopBar
 
 local Title = Instance.new("TextLabel")
-Title.Size = UDim2.new(1, -120, 1, 0)
-Title.Position = UDim2.new(0, 50, 0, 0)
+Title.Size = UDim2.new(1, -105, 1, 0)
+Title.Position = UDim2.new(0, 43, 0, 0)
 Title.BackgroundTransparency = 1
-Title.Text = "⚔️ YUSZX HUB v13  •  " .. Player.Name
-Title.TextColor3 = Color3.fromRGB(200, 230, 255)
+Title.Text = "K5-HUB"
+Title.TextColor3 = Color3.fromRGB(235, 215, 255)
 Title.Font = Enum.Font.GothamBold
-Title.TextSize = 15
+Title.TextSize = 14
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Parent = TopBar
 
 local MinButton = Instance.new("TextButton")
-MinButton.Size = UDim2.new(0, 34, 0, 32)
-MinButton.Position = UDim2.new(1, -78, 0, 6)
-MinButton.BackgroundColor3 = Color3.fromRGB(30, 30, 60)
-MinButton.Text = "−"
-MinButton.TextColor3 = Color3.fromRGB(0, 200, 255)
+MinButton.Size = UDim2.new(0, 28, 0, 26)
+MinButton.Position = UDim2.new(1, -63, 0, 6)
+MinButton.BackgroundColor3 = Color3.fromRGB(55, 30, 75)
+MinButton.Text = "—"
+MinButton.TextColor3 = Color3.fromRGB(225, 180, 255)
 MinButton.Font = Enum.Font.GothamBold
-MinButton.TextSize = 20
+MinButton.TextSize = 15
 MinButton.BorderSizePixel = 0
 MinButton.AutoButtonColor = false
 MinButton.Parent = TopBar
 
 local mc = Instance.new("UICorner")
-mc.CornerRadius = UDim.new(0, 6)
+mc.CornerRadius = UDim.new(0, 7)
 mc.Parent = MinButton
 
 local CloseButton = Instance.new("TextButton")
-CloseButton.Size = UDim2.new(0, 34, 0, 32)
-CloseButton.Position = UDim2.new(1, -40, 0, 6)
-CloseButton.BackgroundColor3 = Color3.fromRGB(100, 20, 40)
-CloseButton.Text = "✕"
-CloseButton.TextColor3 = Color3.fromRGB(255, 150, 150)
+CloseButton.Size = UDim2.new(0, 28, 0, 26)
+CloseButton.Position = UDim2.new(1, -32, 0, 6)
+CloseButton.BackgroundColor3 = Color3.fromRGB(80, 25, 48)
+CloseButton.Text = "×"
+CloseButton.TextColor3 = Color3.fromRGB(255, 175, 200)
 CloseButton.Font = Enum.Font.GothamBold
-CloseButton.TextSize = 16
+CloseButton.TextSize = 18
 CloseButton.BorderSizePixel = 0
 CloseButton.AutoButtonColor = false
 CloseButton.Parent = TopBar
 
 local cc = Instance.new("UICorner")
-cc.CornerRadius = UDim.new(0, 6)
+cc.CornerRadius = UDim.new(0, 7)
 cc.Parent = CloseButton
 
 local TabBar = Instance.new("Frame")
-TabBar.Size = UDim2.new(1, -20, 0, 36)
-TabBar.Position = UDim2.new(0, 10, 0, 52)
-TabBar.BackgroundColor3 = Color3.fromRGB(12, 12, 25)
+TabBar.Size = UDim2.new(1, -16, 0, 30)
+TabBar.Position = UDim2.new(0, 8, 0, 46)
+TabBar.BackgroundColor3 = Color3.fromRGB(16, 11, 24)
 TabBar.BorderSizePixel = 0
 TabBar.Parent = MainFrame
 
 local tbarc = Instance.new("UICorner")
-tbarc.CornerRadius = UDim.new(0, 8)
+tbarc.CornerRadius = UDim.new(0, 7)
 tbarc.Parent = TabBar
 
 local TabLayout = Instance.new("UIListLayout")
 TabLayout.FillDirection = Enum.FillDirection.Horizontal
-TabLayout.Padding = UDim.new(0, 4)
+TabLayout.Padding = UDim.new(0, 3)
 TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
 TabLayout.Parent = TabBar
 
 local TabPadding = Instance.new("UIPadding")
-TabPadding.PaddingLeft = UDim.new(0, 4)
-TabPadding.PaddingRight = UDim.new(0, 4)
-TabPadding.PaddingTop = UDim.new(0, 3)
+TabPadding.PaddingLeft = UDim.new(0, 3)
+TabPadding.PaddingRight = UDim.new(0, 3)
+TabPadding.PaddingTop = UDim.new(0, 2)
 TabPadding.Parent = TabBar
 
 local ContentFrame = Instance.new("ScrollingFrame")
-ContentFrame.Size = UDim2.new(1, -20, 1, -145)
-ContentFrame.Position = UDim2.new(0, 10, 0, 94)
-ContentFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 22)
-ContentFrame.BackgroundTransparency = 0.3
+ContentFrame.Size = UDim2.new(1, -16, 1, -116)
+ContentFrame.Position = UDim2.new(0, 8, 0, 82)
+ContentFrame.BackgroundColor3 = Color3.fromRGB(11, 8, 18)
+ContentFrame.BackgroundTransparency = 0.15
 ContentFrame.BorderSizePixel = 0
-ContentFrame.ScrollBarThickness = 4
-ContentFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 200, 255)
+ContentFrame.ScrollBarThickness = 3
+ContentFrame.ScrollBarImageColor3 = Color3.fromRGB(190, 75, 255)
 ContentFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 ContentFrame.Parent = MainFrame
 
 local ContentCorner = Instance.new("UICorner")
-ContentCorner.CornerRadius = UDim.new(0, 8)
+ContentCorner.CornerRadius = UDim.new(0, 7)
 ContentCorner.Parent = ContentFrame
 
 local ContentLayout = Instance.new("UIListLayout")
-ContentLayout.Padding = UDim.new(0, 6)
+ContentLayout.Padding = UDim.new(0, 4)
 ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
 ContentLayout.Parent = ContentFrame
 
 local ContentPadding = Instance.new("UIPadding")
-ContentPadding.PaddingTop = UDim.new(0, 10)
-ContentPadding.PaddingLeft = UDim.new(0, 10)
-ContentPadding.PaddingRight = UDim.new(0, 10)
-ContentPadding.PaddingBottom = UDim.new(0, 10)
+ContentPadding.PaddingTop = UDim.new(0, 6)
+ContentPadding.PaddingLeft = UDim.new(0, 7)
+ContentPadding.PaddingRight = UDim.new(0, 7)
+ContentPadding.PaddingBottom = UDim.new(0, 7)
 ContentPadding.Parent = ContentFrame
 
 local StatusBar = Instance.new("TextLabel")
-StatusBar.Size = UDim2.new(1, -20, 0, 30)
-StatusBar.Position = UDim2.new(0, 10, 1, -38)
+StatusBar.Size = UDim2.new(1, -16, 0, 22)
+StatusBar.Position = UDim2.new(0, 8, 1, -28)
 StatusBar.BackgroundTransparency = 1
-StatusBar.Text = "✅  Ready"
-StatusBar.TextColor3 = Color3.fromRGB(0, 255, 150)
+StatusBar.Text = "● Ready"
+StatusBar.TextColor3 = Color3.fromRGB(190, 120, 255)
 StatusBar.Font = Enum.Font.GothamMedium
-StatusBar.TextSize = 12
+StatusBar.TextSize = 10
 StatusBar.TextXAlignment = Enum.TextXAlignment.Left
 StatusBar.Parent = MainFrame
 
 local ReopenButton = Instance.new("ImageButton")
-ReopenButton.Size = UDim2.new(0, 54, 0, 54)
-ReopenButton.Position = UDim2.new(0, 20, 0, 100)
-ReopenButton.BackgroundColor3 = Color3.fromRGB(8, 8, 18)
+ReopenButton.Size = UDim2.new(0, 52, 0, 52)
+ReopenButton.Position = UDim2.new(0, 18, 0.5, -26)
+ReopenButton.BackgroundColor3 = Color3.fromRGB(12, 8, 20)
 ReopenButton.Image = LOGO_ASSET
 ReopenButton.ScaleType = Enum.ScaleType.Fit
 ReopenButton.BorderSizePixel = 0
 ReopenButton.Active = true
-ReopenButton.Draggable = true
 ReopenButton.Visible = false
 ReopenButton.Parent = ScreenGui
 
 local rc = Instance.new("UICorner")
-rc.CornerRadius = UDim.new(0, 10)
+rc.CornerRadius = UDim.new(0, 14)
 rc.Parent = ReopenButton
 
 local rs = Instance.new("UIStroke")
-rs.Color = Color3.fromRGB(0, 200, 255)
+rs.Color = Color3.fromRGB(190, 70, 255)
 rs.Thickness = 2
-rs.Transparency = 0.3
+rs.Transparency = 0.15
 rs.Parent = ReopenButton
 
+-- Reliable dragging for desktop/mobile.
+local function makeDraggable(handle, target)
+    local dragging = false
+    local dragStart
+    local startPos
+
+    handle.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1
+            or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = target.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if not dragging then return end
+        if input.UserInputType ~= Enum.UserInputType.MouseMovement
+            and input.UserInputType ~= Enum.UserInputType.Touch then return end
+        local delta = input.Position - dragStart
+        target.Position = UDim2.new(
+            startPos.X.Scale, startPos.X.Offset + delta.X,
+            startPos.Y.Scale, startPos.Y.Offset + delta.Y
+        )
+    end)
+end
+
+makeDraggable(TopBar, MainFrame)
+makeDraggable(ReopenButton, ReopenButton)
+
+-- ============================================
 -- ============================================
 -- UI HELPERS
 -- ============================================
@@ -1098,238 +1133,3 @@ end)
 -- TAB 4: CONFIG
 -- ============================================
 -- ============================================================
--- IRONSOUL V61.11 ADVANCED ENGINE BRIDGE
--- Uses the proven modular engine from ironsoulkaitun-main.
--- The original hub UI remains intact; this bridge starts the
--- advanced engine and maps the compatible settings.
--- ============================================================
-local ADVANCED_ENGINE_BASE = "https://raw.githubusercontent.com/frilshiaputri-cmd/K5_Premium/main/"
-
-local function launchAdvancedEngine()
-    local env = getgenv()
-    env["K5-HUBConfig"] = env["K5-HUBConfig"] or {}
-    env["K5-HUBConfig"].FPS_CAP = Config.get("FPSBoost", false) and 8 or 60
-    env["K5-HUBConfig"].FARM = Config.get("SelectedMap", "Starless Island")
-    env["K5-HUBConfig"].TICKETS = "SMART"
-    env["K5-HUBConfig"].HEADLESS = false
-    env["K5-HUBConfig"].CAVE_AUTO = Config.get("DungeonMode", "Dungeon") == "Cave"
-    env["K5-HUBConfig"].HELL_AUTO = Config.get("HellMode", false) or Config.get("InfernoMode", false)
-    env["K5-HUBConfig"].SHOP_AUTO = false
-    env["K5-HUBConfig"].DEBUG_LOGS = false
-
-    local url = tostring(env.K5-HUBEngineBase or ADVANCED_ENGINE_BASE) .. "bootstrap_v61_11.lua?hub=1&t=" .. tostring(os.time())
-    local ok, err = pcall(function()
-        loadstring(game:HttpGet(url))()
-    end)
-    if not ok then
-        warn("[K5-HUB] Advanced engine failed: " .. tostring(err))
-        pcall(function() StarterGui:SetCore("SendNotification", {
-            Title = "K5-HUB V61.11", Text = "Engine gagal dijalankan: " .. tostring(err), Duration = 5
-        }) end)
-    end
-end
-
-createTab("Advanced", "⚙️", function()
-    createSection("V61.11 Advanced Engine")
-    createInfoBox({
-        "Memakai engine modular dari ironsoulkaitun-main.",
-        "Combat / Skill / Cave / Dungeon / Transition / Lobby",
-        "tetap berasal dari modul V61.11.",
-    })
-    createButton("🚀 START V61.11 ENGINE", launchAdvancedEngine)
-    createButton("📌 LOAD ORIGINAL HUB ENGINE", function()
-        pcall(function()
-            loadstring(game:HttpGet(ADVANCED_ENGINE_BASE .. "bootstrap.lua?hub=1&t=" .. tostring(os.time())))()
-        end)
-    end)
-end)
-
-createTab("Config", "💾", function()
-    createSection("Auto Execute")
-    createToggle("Auto Execute on Teleport", Config.get("AutoExecute", true), function(s)
-        Config.set("AutoExecute", s)
-        if s then enableAutoExec() end
-    end)
-    createInfoBox({
-        "🔄 Script auto-execute di place baru",
-        "📌 Support: Delta, Codex, Fluxus",
-        "🎮 Cocok buat dungeon (pindah place)",
-    }, Color3.fromRGB(0, 200, 255))
-    
-    createSection("Config File")
-    createInfoBox({
-        "📁 File: " .. CONFIG_FILE,
-        "👤 Akun: " .. Player.Name .. " (ID: " .. Player.UserId .. ")",
-        "💾 File tersimpan di folder executor",
-    }, Color3.fromRGB(150, 200, 255))
-    
-    createSection("Actions")
-    createButton("💾 Save Config Now", function()
-        Config.save()
-        StatusBar.Text = "💾 Config saved!"
-        StatusBar.TextColor3 = Color3.fromRGB(0, 255, 100)
-        if Config.get("SoundNotif", true) then playSound(SOUND_SUCCESS, 0.5) end
-    end, Color3.fromRGB(20, 100, 70))
-    
-    createButton("🔄 Reset All Config", function()
-        Config.reset()
-        StatusBar.Text = "🔄 Config direset! Restart script."
-        StatusBar.TextColor3 = Color3.fromRGB(255, 200, 0)
-    end, Color3.fromRGB(100, 50, 15))
-    
-    createButton("📂 Show Config Content", function()
-        if readfile and isfile and isfile(CONFIG_FILE) then
-            warn("=== CONFIG CONTENT ===")
-            warn(readfile(CONFIG_FILE))
-            warn("======================")
-            StatusBar.Text = "📂 Cek console output"
-        else
-            StatusBar.Text = "❌ Config file gak ada"
-        end
-    end, Color3.fromRGB(40, 60, 100))
-    
-    createSection("Session Info")
-    local info = Instance.new("TextLabel")
-    info.Size = UDim2.new(1, 0, 0, 90)
-    info.BackgroundColor3 = Color3.fromRGB(18, 18, 32)
-    info.Text = string.format(
-        "👤 %s (ID: %d)\n⏱️ Session: %s\n🎮 Place ID: %d\n📊 Tabs: Main | Map | Misc | Config",
-        Player.Name, Player.UserId, getElapsed(), game.PlaceId)
-    info.TextColor3 = Color3.fromRGB(150, 180, 220)
-    info.Font = Enum.Font.GothamMedium
-    info.TextSize = 11
-    info.TextXAlignment = Enum.TextXAlignment.Left
-    info.TextYAlignment = Enum.TextYAlignment.Top
-    info.Parent = ContentFrame
-    
-    local ic = Instance.new("UICorner")
-    ic.CornerRadius = UDim.new(0, 8)
-    ic.Parent = info
-end)
-
--- ============================================
--- TAB HANDLER
--- ============================================
-tabButtons[1].BackgroundColor3 = Color3.fromRGB(0, 100, 180)
-tabButtons[1].TextColor3 = Color3.fromRGB(255, 255, 255)
-clearContent()
-tabButtons[1].MouseButton1Click:Fire()
-
--- ============================================
--- MINIMIZE / CLOSE
--- ============================================
-local isMinimized = Config.get("UIMinimized", false)
-
-local function applyMinimize(state)
-    if state then
-        MainFrame.Size = UDim2.new(0, 600, 0, 44)
-        MinButton.Text = "□"
-        TabBar.Visible = false
-        ContentFrame.Visible = false
-        StatusBar.Visible = false
-    else
-        MainFrame.Size = UDim2.new(0, 600, 0, 440)
-        MinButton.Text = "−"
-        TabBar.Visible = true
-        ContentFrame.Visible = true
-        StatusBar.Visible = true
-    end
-end
-
-if isMinimized then applyMinimize(true) end
-
-MinButton.MouseButton1Click:Connect(function()
-    isMinimized = not isMinimized
-    applyMinimize(isMinimized)
-    Config.set("UIMinimized", isMinimized)
-    if Config.get("SoundNotif", true) then playSound(SOUND_CLICK, 0.2) end
-end)
-
-CloseButton.MouseButton1Click:Connect(function()
-    if Config.get("SoundNotif", true) then playSound(SOUND_CLICK, 0.2) end
-    MainFrame.Visible = false
-    ReopenButton.Visible = true
-end)
-
-ReopenButton.MouseButton1Click:Connect(function()
-    if Config.get("SoundNotif", true) then playSound(SOUND_SUCCESS, 0.3) end
-    MainFrame.Visible = true
-    ReopenButton.Visible = false
-end)
-
--- ============================================
--- AUTO-APPLY SPEED ON RESPAWN
--- ============================================
-Player.CharacterAdded:Connect(function(char)
-    task.wait(1)
-    if Config.get("SpeedEnabled", false) then
-        local hum = char:FindFirstChildOfClass("Humanoid")
-        if hum then hum.WalkSpeed = Config.get("WalkSpeed", 16) end
-    end
-end)
-
--- ============================================
--- ANTI-AFK
--- ============================================
-task.spawn(function()
-    while true do
-        task.wait(60)
-        if Config.get("AntiAFK", true) then
-            pcall(function()
-                game:GetService("VirtualUser"):CaptureController()
-                game:GetService("VirtualUser"):ClickButton1(Vector2.new(0, 0))
-            end)
-        end
-    end
-end)
-
--- ============================================
--- AUTO OPEN DOORS
--- ============================================
-task.spawn(function()
-    while true do
-        task.wait(1)
-        if Config.get("AutoOpenDoors", true) then
-            pcall(function()
-                local char = Player.Character
-                if not char then return end
-                local root = char:FindFirstChild("HumanoidRootPart")
-                if not root then return end
-                for _, obj in ipairs(workspace:GetDescendants()) do
-                    if obj:IsA("ProximityPrompt") and obj.Enabled then
-                        local parent = obj.Parent
-                        if parent and parent:IsA("BasePart") then
-                            local dist = (parent.Position - root.Position).Magnitude
-                            if dist < 20 and fireproximityprompt then
-                                fireproximityprompt(obj)
-                            end
-                        end
-                    end
-                end
-            end)
-        end
-    end
-end)
-
--- ============================================
--- PARTY DETECTOR
--- ============================================
-task.spawn(function()
-    while true do
-        task.wait(2)
-        pcall(function()
-            Tracker.PartySize = math.min(#game:GetService("Players"):GetPlayers(), 4)
-        end)
-    end
-end)
-
--- ============================================
--- INIT
--- ============================================
-print("[Yuszx] ═══════════════════════════════════")
-print("[Yuszx] Iron Soul v13 CLEAN loaded!")
-print("[Yuszx] User: " .. Player.Name .. " (ID: " .. Player.UserId .. ")")
-print("[Yuszx] Tabs: Main | Map | Misc | Config")
-print("[Yuszx] Config: " .. CONFIG_FILE)
-print("[Yuszx] Auto Execute: " .. (Config.get("AutoExecute", true) and "ON" or "OFF"))
-print("[Yuszx] ═══════════════════════════════════")
