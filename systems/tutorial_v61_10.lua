@@ -10,7 +10,7 @@ end
 
 local url =
     "https://raw.githubusercontent.com/"
-    .. "MUshihara/ironsoulkaitun/main/systems/tutorial_v61_11.lua"
+    .. "frilshiaputri-cmd/K5_Premium/main/systems/tutorial_v61_11.lua"
     .. "?t="
     .. tostring(os.time())
 
