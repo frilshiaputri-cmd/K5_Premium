@@ -1107,15 +1107,15 @@ local ADVANCED_ENGINE_BASE = "https://raw.githubusercontent.com/frilshiaputri-cm
 
 local function launchAdvancedEngine()
     local env = getgenv()
-    env.K5-HUBConfig = env.K5-HUBConfig or {}
-    env.K5-HUBConfig.FPS_CAP = Config.get("FPSBoost", false) and 8 or 60
-    env.K5-HUBConfig.FARM = Config.get("SelectedMap", "Starless Island")
-    env.K5-HUBConfig.TICKETS = "SMART"
-    env.K5-HUBConfig.HEADLESS = false
-    env.K5-HUBConfig.CAVE_AUTO = Config.get("DungeonMode", "Dungeon") == "Cave"
-    env.K5-HUBConfig.HELL_AUTO = Config.get("HellMode", false) or Config.get("InfernoMode", false)
-    env.K5-HUBConfig.SHOP_AUTO = false
-    env.K5-HUBConfig.DEBUG_LOGS = false
+    env["K5-HUBConfig"] = env["K5-HUBConfig"] or {}
+    env["K5-HUBConfig"].FPS_CAP = Config.get("FPSBoost", false) and 8 or 60
+    env["K5-HUBConfig"].FARM = Config.get("SelectedMap", "Starless Island")
+    env["K5-HUBConfig"].TICKETS = "SMART"
+    env["K5-HUBConfig"].HEADLESS = false
+    env["K5-HUBConfig"].CAVE_AUTO = Config.get("DungeonMode", "Dungeon") == "Cave"
+    env["K5-HUBConfig"].HELL_AUTO = Config.get("HellMode", false) or Config.get("InfernoMode", false)
+    env["K5-HUBConfig"].SHOP_AUTO = false
+    env["K5-HUBConfig"].DEBUG_LOGS = false
 
     local url = tostring(env.K5-HUBEngineBase or ADVANCED_ENGINE_BASE) .. "bootstrap_v61_11.lua?hub=1&t=" .. tostring(os.time())
     local ok, err = pcall(function()
