@@ -1,9 +1,12 @@
--- IRONSOUL COMBINED LOADER
--- Loads the original hub UI. The Advanced tab starts the V61.11 modular engine.
-getgenv().IronSoulEngineBase = getgenv().IronSoulEngineBase or
-    "https://raw.githubusercontent.com/MUshihara/ironsoulkaitun/main/"
-
-local HUB_URL = getgenv().IronSoulHubURL or
-    "https://raw.githubusercontent.com/MUshihara/ironsoulkaitun/main/Yuszx_Merged.lua"
-
-loadstring(game:HttpGet(HUB_URL .. "?t=" .. tostring(os.time())))()
+-- K5-HUB LOCAL REPO LOADER
+-- Main entry point for the K5_Premium repository.
+local BASE = "https://raw.githubusercontent.com/frilshiaputri-cmd/K5_Premium/main/"
+getgenv().IronSoulEngineBase = BASE
+getgenv()["K5-HUBEngineBase"] = BASE
+local HUB_URL = BASE .. "Yuszx_Merged.lua"
+local ok, err = pcall(function()
+    loadstring(game:HttpGet(HUB_URL .. "?t=" .. tostring(os.time())))()
+end)
+if not ok then
+    warn("[K5-HUB] Loader failed: " .. tostring(err))
+end
