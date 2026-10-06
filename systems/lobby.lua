@@ -9,7 +9,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local LocalPlayer = Players.LocalPlayer
-local BASE = "https://raw.githubusercontent.com/MUshihara/ironsoulkaitun/main/"
+local BASE = "https://raw.githubusercontent.com/frilshiaputri-cmd/K5_Premium/main/"
 
 local function status(text)
     text = tostring(text or "")
