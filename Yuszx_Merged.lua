@@ -259,7 +259,7 @@ local function playIntro()
     title.Size = UDim2.new(1, 0, 0, 60)
     title.Position = UDim2.new(0, 0, 0, 10)
     title.BackgroundTransparency = 1
-    title.Text = "YUSZX HUB"
+    title.Text = "K5-HUB"
     title.TextColor3 = Color3.fromRGB(0, 200, 255)
     title.TextSize = 42
     title.Font = Enum.Font.GothamBold
@@ -333,7 +333,7 @@ local function playIntro()
     end
     
     local glitchChars = {"#", "@", "!", "%", "&", "*", "?", "~"}
-    local original = "YUSZX HUB"
+    local original = "K5-HUB"
     local startT = tick()
     local conn
     conn = game:GetService("RunService").RenderStepped:Connect(function()
@@ -1141,7 +1141,7 @@ local function launchAdvancedEngine()
     env["K5-HUBConfig"].SHOP_AUTO = false
     env["K5-HUBConfig"].DEBUG_LOGS = false
 
-    local url = tostring(env.K5-HUBEngineBase or ADVANCED_ENGINE_BASE) .. "bootstrap_v61_11.lua?hub=1&t=" .. tostring(os.time())
+    local url = tostring(env["K5-HUBEngineBase"] or ADVANCED_ENGINE_BASE) .. "bootstrap_v61_11.lua?hub=1&t=" .. tostring(os.time())
     local ok, err = pcall(function()
         loadstring(game:HttpGet(url))()
     end)
@@ -1271,7 +1271,6 @@ end)
 
 if Config.get("UIMinimized", false) then showLogo() end
 
--- ============================================
 -- ============================================
 -- AUTO-APPLY SPEED ON RESPAWN
 -- ============================================
