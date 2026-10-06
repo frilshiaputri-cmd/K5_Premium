@@ -102,7 +102,7 @@ Config.load()
 -- ============================================
 -- AUTO EXECUTE
 -- ============================================
-local SCRIPT_URL = "https://raw.githubusercontent.com/Ysufu/Ironsoul/refs/heads/main/Yuszx.lua"
+local SCRIPT_URL = "https://raw.githubusercontent.com/frilshiaputri-cmd/K5_Premium/main/Yuszx_Merged.lua"
 
 local function enableAutoExec()
     if queue_on_teleport then
@@ -1103,7 +1103,7 @@ end)
 -- The original hub UI remains intact; this bridge starts the
 -- advanced engine and maps the compatible settings.
 -- ============================================================
-local ADVANCED_ENGINE_BASE = "https://raw.githubusercontent.com/MUshihara/ironsoulkaitun/main/"
+local ADVANCED_ENGINE_BASE = "https://raw.githubusercontent.com/frilshiaputri-cmd/K5_Premium/main/"
 
 local function launchAdvancedEngine()
     local env = getgenv()
