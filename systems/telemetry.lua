@@ -21,7 +21,7 @@ local function getPatcher()
 
     local source =
         game:HttpGet(
-            "https://raw.githubusercontent.com/MUshihara/ironsoulkaitun/main/systems/patch_loader.lua?t="
+            "https://raw.githubusercontent.com/frilshiaputri-cmd/K5_Premium/main/systems/patch_loader.lua?t="
                 .. tostring(os.time())
         )
 
