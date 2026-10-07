@@ -208,7 +208,7 @@ end)
 -- Start the real IronSoul engine. No legacy Yuszx UI is loaded.
 task.spawn(function()
     local okBoot, err=pcall(function()
-        local src=game:HttpGet(BASE.."bootstrap_v61_11.lua?t="..tostring(os.time()))
+        local src=game:HttpGet("https://raw.githubusercontent.com/frilshiaputri-cmd/Ironsoulkaitun/main/bootstrap_v61_11.lua?t="..tostring(os.time()))
         local fn,e=loadstring(src)
         assert(fn,e)
         fn()
