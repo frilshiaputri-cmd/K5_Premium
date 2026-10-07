@@ -410,13 +410,42 @@ local function loadRaw(path)
 end
 
 local function queueBootstrap(reason)
+    local skill = type(Config.AUTO_SKILL) == "table" and Config.AUTO_SKILL or {}
     local payload = string.format([[
 task.wait(1.35)
-getgenv().IronSoulConfig = getgenv().IronSoulConfig or {
+getgenv().IronSoulConfig = {
     FPS_CAP = %s,
     FARM = %q,
     TICKETS = %q,
     HEADLESS = %s,
+    CAVE_AUTO = %s,
+    HELL_AUTO = %s,
+    SHOP_AUTO = %s,
+    MOBILE_STATUS = %s,
+    DEBUG_LOGS = %s,
+    AUTO_FARM = %s,
+    FARM_POSITION = %q,
+    AUTO_ATTACK = %s,
+    AUTO_SKILL = {%s,%s,%s,%s,%s},
+    AUTO_CHEST = %s,
+    AUTO_DRAGON_EGG = %s,
+    WAIT_PARTY_FULL = %s,
+    AUTO_OPEN_DOOR = %s,
+    AUTO_REPLAY = %s,
+    AUTO_LEAVE = %s,
+    ANTI_AFK = %s,
+    WALK_SPEED = %s,
+    FPS_BOOST = %s,
+    HIDE_PLAYERS = %s,
+    SOUND = %s,
+    AUTO_LOBBY = %s,
+    AUTO_EXECUTE = %s,
+    MAP = %q,
+    FARM_RANGE = %s,
+    ORBIT_RADIUS = %s,
+    ORBIT_HEIGHT = %s,
+    ORBIT_SPEED = %s,
+    FARM_NOCLIP = %s,
 }
 loadstring(game:HttpGet(
     %q .. "?isv=61.11&t=" .. tostring(os.time())
@@ -426,6 +455,35 @@ loadstring(game:HttpGet(
         tostring(Config.FARM or "NEWBIE"),
         tostring(Config.TICKETS or "SMART"),
         tostring(Config.HEADLESS ~= false),
+        tostring(Config.CAVE_AUTO ~= false),
+        tostring(Config.HELL_AUTO ~= false),
+        tostring(Config.SHOP_AUTO ~= false),
+        tostring(Config.MOBILE_STATUS == true),
+        tostring(Config.DEBUG_LOGS == true),
+        tostring(Config.AUTO_FARM == true),
+        tostring(Config.FARM_POSITION or "Under"),
+        tostring(Config.AUTO_ATTACK == true),
+        tostring(skill[1] == true), tostring(skill[2] == true), tostring(skill[3] == true),
+        tostring(skill[4] == true), tostring(skill[5] == true),
+        tostring(Config.AUTO_CHEST == true),
+        tostring(Config.AUTO_DRAGON_EGG == true),
+        tostring(Config.WAIT_PARTY_FULL == true),
+        tostring(Config.AUTO_OPEN_DOOR == true),
+        tostring(Config.AUTO_REPLAY == true),
+        tostring(Config.AUTO_LEAVE == true),
+        tostring(Config.ANTI_AFK ~= false),
+        tostring(tonumber(Config.WALK_SPEED) or 16),
+        tostring(Config.FPS_BOOST == true),
+        tostring(Config.HIDE_PLAYERS == true),
+        tostring(Config.SOUND ~= false),
+        tostring(Config.AUTO_LOBBY == true),
+        tostring(Config.AUTO_EXECUTE ~= false),
+        tostring(Config.MAP or "Dungeon"),
+        tostring(tonumber(Config.FARM_RANGE) or 25),
+        tostring(tonumber(Config.ORBIT_RADIUS) or 6),
+        tostring(tonumber(Config.ORBIT_HEIGHT) or 5),
+        tostring(tonumber(Config.ORBIT_SPEED) or 4),
+        tostring(Config.FARM_NOCLIP ~= false),
         BASE .. "bootstrap_v61_11.lua"
     )
 
@@ -507,3 +565,10 @@ print("[IronSoul V61.11]", routeName)
 status(routeName .. " | starting")
 
 loadRaw(route)
+
+-- Re-arm the K5 WindUI-controlled automation after every teleport.
+if routeName == "Dungeon" then
+    pcall(function()
+        loadRaw("systems/k5_control_bridge.lua")
+    end)
+end
