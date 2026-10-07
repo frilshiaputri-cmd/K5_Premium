@@ -192,6 +192,19 @@ applySpeed(C.WALK_SPEED)
 hidePlayers(C.HIDE_PLAYERS)
 notify("WindUI siap • memuat IronSoul...")
 
+-- K5 control bridge: wires WindUI controls to the IronSoul-style automation
+-- without loading the legacy UI.
+task.spawn(function()
+    local okBridge, errBridge = pcall(function()
+        local src=game:HttpGet(BASE.."systems/k5_control_bridge.lua?t="..tostring(os.time()))
+        local fn,e=loadstring(src)
+        assert(fn,e)
+        fn()
+    end)
+    if not okBridge then notify("K5 bridge gagal: "..tostring(errBridge)) end
+end)
+
+
 -- Start the real IronSoul engine. No legacy Yuszx UI is loaded.
 task.spawn(function()
     local okBoot, err=pcall(function()
